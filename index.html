@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Life Dashboard</title>
+
+    <link rel="icon" type="image/webp" href="img/Logo_revou.webp">
+</head>
+
+<body>
+    <main>
+        <header>
+            <output id="currentTime" aria-label="Current time"> 00:00:00 </output>
+            <time id="currentDate" datetime="2026-01-27"> Tuesday, January 27, 2026 </time>
+            <p id="greeting"> Good Morning </p>
+        </header>
+
+        <section aria-label="Produktivitas">
+            <section aria-labelledby="focusTimer">
+                <h2 id="focusTimerTitle"> Focus Timer </h2>
+                <output id="focusTimer" aria-label="Focus timer"> 00:00 </output>
+                <nav>
+                    <button type="button" id="startTimer"> Start </button>
+                    <button type="button" id="stopTimer"> Stop </button>
+                    <button type="button" id="resetTimer"> Reset </button>
+                </nav>
+            </section>
+
+            <section aria-labelledby="task">
+                <h2 id="tasksTitle"> Tasks </h2>
+                <form id="taskForm">
+                    <label for="taskInput" hidden> Add a new task </label>
+
+                    <input
+                        id="taskInput"
+                        name="task"
+                        type="text"
+                        placeholder="Add a new task..."
+                        autocomplete="off"
+                    >
+
+                    <button type="submit"> Add </button>
+                </form>
+
+                <ul id="taskList"></ul>
+            </section>
+
+            <section aria-labelledby="quickLinks">
+                <h2 id="quickLinksTitle"> Quick Links </h2>
+
+                <form id="linkForm">
+                    <label for="linkName"> Link Name </label>
+
+                    <input
+                        id="linkName"
+                        name="linkName"
+                        type="text"
+                        placeholder="Link name"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <label for="linkUrl"> URL </label>
+
+                    <input
+                        id="linkUrl"
+                        name="linkUrl"
+                        type="url"
+                        placeholder="URL"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button class="add-btn" type="submit" > Add Link </button>
+                </form>
+
+                <nav
+                    id="linksList"
+                    class="links-list"
+                    aria-label="Quick links"
+                >
+                </nav>
+            </section>
+        </section>
+    </main>
+
+    <script src="js/index.js"></script>
+
+</body>
+</html>
