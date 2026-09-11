@@ -1,0 +1,897 @@
+/* ==========================================================
+   PERSONAL PRODUCTIVITY DASHBOARD — css/index.css
+   ==========================================================
+   Table of contents
+   1.  CSS Custom Properties (tokens)
+   2.  Dark theme (default)
+   3.  Light theme  [data-theme="light"]
+   4.  Reset & base
+   5.  Animated gradient background
+   6.  Typography
+   7.  Layout — header
+   8.  Layout — main grid
+   9.  Glassmorphism card
+   10. Timer card
+   11. Quick-links card
+   12. To-do list card
+   13. Buttons
+   14. Form elements
+   15. Empty states & error messages
+   16. Theme toggle button
+   17. Responsive breakpoints
+   18. Animations & transitions
+   19. Accessibility — reduced motion
+   ========================================================== */
+
+
+/* ----------------------------------------------------------
+   1. CSS Custom Properties (tokens)
+   ---------------------------------------------------------- */
+:root {
+  /* spacing */
+  --space-xs:  0.25rem;
+  --space-sm:  0.5rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2rem;
+  --space-2xl: 3rem;
+
+  /* radii */
+  --radius-sm:  0.5rem;
+  --radius-md:  1rem;
+  --radius-lg:  1.5rem;
+  --radius-full: 9999px;
+
+  /* typography */
+  --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  2rem;
+  --text-4xl:  3rem;
+
+  /* transitions */
+  --ease-fast:   150ms ease;
+  --ease-normal: 300ms ease;
+  --ease-slow:   500ms ease;
+}
+
+
+/* ----------------------------------------------------------
+   2. Dark theme (default)
+   ---------------------------------------------------------- */
+[data-theme="dark"],
+:root {
+  /* gradient stops */
+  --grad-1: #1a0533;
+  --grad-2: #3d1a78;
+  --grad-3: #1e3a8a;
+  --grad-4: #5b21b6;
+
+  /* glass card */
+  --glass-bg:     rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.22);
+  --glass-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  --glass-blur:   16px;
+
+  /* text */
+  --text-primary:   rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.65);
+  --text-muted:     rgba(255, 255, 255, 0.4);
+
+  /* accents */
+  --accent:         #c084fc;   /* purple-400 */
+  --accent-hover:   #e879f9;   /* fuchsia-400 */
+  --accent-2:       #22d3ee;   /* cyan-400 */
+  --danger:         #fb7185;   /* rose-400 */
+  --success:        #34d399;   /* emerald-400 */
+
+  /* inputs */
+  --input-bg:     rgba(255, 255, 255, 0.08);
+  --input-border: rgba(255, 255, 255, 0.2);
+  --input-focus:  rgba(167, 139, 250, 0.6);
+
+  /* button */
+  --btn-bg:       #7c3aed;
+  --btn-border:   #a855f7;
+  --btn-hover-bg: #9333ea;
+
+  /* task done */
+  --done-opacity: 0.45;
+
+  /* theme icon shown */
+  --icon-moon-display: block;
+  --icon-sun-display:  none;
+}
+
+
+/* ----------------------------------------------------------
+   3. Light theme
+   ---------------------------------------------------------- */
+[data-theme="light"] {
+  /* gradient stops — warm peach/rose/lavender */
+  --grad-1: #ffecd2;
+  --grad-2: #fcb69f;
+  --grad-3: #a18cd1;
+  --grad-4: #fbc2eb;
+
+  /* glass card */
+  --glass-bg:     rgba(255, 255, 255, 0.35);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 8px 32px rgba(80, 40, 120, 0.15);
+  --glass-blur:   18px;
+
+  /* text */
+  --text-primary:   rgba(30, 20, 60, 0.95);
+  --text-secondary: rgba(30, 20, 60, 0.65);
+  --text-muted:     rgba(30, 20, 60, 0.4);
+
+  /* accents */
+  --accent:         #7c3aed;   /* violet-600 */
+  --accent-hover:   #5b21b6;   /* violet-700 */
+  --accent-2:       #0ea5e9;   /* sky-500 */
+  --danger:         #dc2626;   /* red-600 */
+  --success:        #16a34a;   /* green-600 */
+
+  /* inputs */
+  --input-bg:     rgba(255, 255, 255, 0.5);
+  --input-border: rgba(100, 60, 180, 0.3);
+  --input-focus:  rgba(124, 58, 237, 0.5);
+
+  /* button */
+  --btn-bg:       rgba(124, 58, 237, 0.15);
+  --btn-border:   rgba(124, 58, 237, 0.4);
+  --btn-hover-bg: rgba(124, 58, 237, 0.3);
+
+  /* task done */
+  --done-opacity: 0.4;
+}
+
+
+/* ----------------------------------------------------------
+   4. Reset & base
+   ---------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: var(--space-lg) var(--space-2xl);
+  transition: background var(--ease-slow), color var(--ease-normal);
+  overflow-x: hidden;
+}
+
+ul,
+ol,
+menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* links inside nav buttons */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* ----------------------------------------------------------
+   5. Animated gradient background
+   ---------------------------------------------------------- */
+body {
+  background: linear-gradient(
+    135deg,
+    var(--grad-1)  0%,
+    var(--grad-2) 30%,
+    var(--grad-3) 65%,
+    var(--grad-4) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradient-pan 18s ease infinite;
+}
+
+@keyframes gradient-pan {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+
+/* ----------------------------------------------------------
+   6. Typography
+   ---------------------------------------------------------- */
+h1 {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+h2 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+small {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+
+/* ----------------------------------------------------------
+   7. Layout — header
+   ---------------------------------------------------------- */
+body > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-lg) var(--space-xl);
+  margin-bottom: var(--space-xl);
+
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+}
+
+body > header section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+#greeting {
+  line-height: 1.2;
+}
+
+#current-time {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+#current-date {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+
+/* ----------------------------------------------------------
+   8. Layout — main grid
+   ---------------------------------------------------------- */
+main {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+/* middle row: timer + quick-links side by side */
+.middle-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+/* todo full width — already a single column naturally */
+.todo-section {
+  width: 100%;
+}
+
+
+/* ----------------------------------------------------------
+   9. Glassmorphism card
+   ---------------------------------------------------------- */
+.card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  padding: var(--space-xl);
+  transition:
+    transform var(--ease-normal),
+    box-shadow var(--ease-normal);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+}
+
+.card > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+
+/* ----------------------------------------------------------
+   10. Timer card
+   ---------------------------------------------------------- */
+#timer-display {
+  display: block;
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-lg);
+  text-shadow: 0 0 24px rgba(167, 139, 250, 0.4);
+  transition: color var(--ease-normal);
+}
+
+#timer-display.running {
+  color: var(--success);
+  text-shadow: 0 0 24px rgba(74, 222, 128, 0.35);
+  animation: timer-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes timer-pulse {
+  from { opacity: 0.85; }
+  to   { opacity: 1; }
+}
+
+/* timer control buttons row */
+article menu {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+}
+
+article menu li {
+  padding: 0;
+  background: transparent;
+  margin: 0;
+}
+
+/* timer settings form */
+#timer-settings {
+  border-top: 1px solid var(--glass-border);
+  padding-top: var(--space-md);
+  display: grid;
+  gap: var(--space-sm);
+}
+
+#timer-settings label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+#timer-settings input {
+  max-width: 120px;
+}
+
+
+/* ----------------------------------------------------------
+   11. Quick-links card
+   ---------------------------------------------------------- */
+/* constrain to one middle-row column width */
+section[aria-label="Quick links"] {
+  width: calc(50% - var(--space-lg) / 2);
+}
+
+/* on tablet/mobile the middle-row stacks, so quick links should also go full-width */
+@media (max-width: 768px) {
+  section[aria-label="Quick links"] {
+    width: 100%;
+  }
+}
+
+#link-form {
+  display: grid;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+#links-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+/* each link item */
+#links-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  border-radius: var(--radius-full);
+  transition:
+    background var(--ease-fast),
+    transform var(--ease-fast);
+}
+
+#links-list li:hover {
+  background: var(--btn-hover-bg);
+  transform: translateY(-1px);
+}
+
+#links-list li a {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* small delete button inside link pill */
+#links-list li button {
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  border-radius: var(--radius-full);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--ease-fast), background var(--ease-fast);
+}
+
+#links-list li button:hover {
+  color: var(--danger);
+  background: rgba(248, 113, 113, 0.15);
+}
+
+
+/* ----------------------------------------------------------
+   12. To-do list card
+   ---------------------------------------------------------- */
+.todo-section > header {
+  margin-bottom: var(--space-md);
+}
+
+#task-count {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+#task-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  align-items: end;
+}
+
+#task-form label {
+  grid-column: 1 / -1;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+#task-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+/* individual task row */
+#task-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  transition:
+    background var(--ease-fast),
+    opacity var(--ease-fast);
+}
+
+#task-list li:hover {
+  background: var(--glass-border);
+}
+
+/* checkbox */
+#task-list li input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: var(--accent);
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* task text label */
+#task-list li label {
+  flex: 1;
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  cursor: pointer;
+  word-break: break-word;
+  transition: color var(--ease-fast), opacity var(--ease-fast);
+}
+
+/* done state */
+#task-list li.done label {
+  text-decoration: line-through;
+  opacity: var(--done-opacity);
+}
+
+/* task inline edit input */
+#task-list li input[type="text"] {
+  flex: 1;
+  font-size: var(--text-base);
+}
+
+/* task action buttons (edit / delete / save) */
+.task-actions {
+  display: flex;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}
+
+.task-actions button {
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--text-xs);
+  border-radius: var(--radius-sm);
+}
+
+.btn-delete:hover {
+  background: rgba(248, 113, 113, 0.25) !important;
+  border-color: var(--danger) !important;
+  color: var(--danger) !important;
+}
+
+.btn-save {
+  background: rgba(74, 222, 128, 0.15) !important;
+  border-color: var(--success) !important;
+  color: var(--success) !important;
+}
+
+.btn-save:hover {
+  background: rgba(74, 222, 128, 0.3) !important;
+}
+
+
+/* ----------------------------------------------------------
+   13. Buttons
+   ---------------------------------------------------------- */
+button {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+  transition:
+    background var(--ease-fast),
+    transform var(--ease-fast),
+    box-shadow var(--ease-fast),
+    opacity var(--ease-fast);
+  white-space: nowrap;
+}
+
+button:hover:not(:disabled) {
+  background: var(--btn-hover-bg);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.97) translateY(0);
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* primary accent button */
+button[type="submit"],
+#timer-start {
+  background: #7c3aed;
+  border-color: #a855f7;
+  color: #ffffff;
+}
+
+button[type="submit"]:hover:not(:disabled),
+#timer-start:hover:not(:disabled) {
+  background: #9333ea;
+  border-color: #c084fc;
+}
+
+[data-theme="light"] button[type="submit"],
+[data-theme="light"] #timer-start {
+  background: #7c3aed;
+  border-color: #6d28d9;
+  color: #ffffff;
+}
+
+[data-theme="light"] button[type="submit"]:hover:not(:disabled),
+[data-theme="light"] #timer-start:hover:not(:disabled) {
+  background: #6d28d9;
+  border-color: #5b21b6;
+}
+
+
+/* ----------------------------------------------------------
+   14. Form elements
+   ---------------------------------------------------------- */
+label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+input[type="text"],
+input[type="url"],
+input[type="number"] {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  width: 100%;
+  transition:
+    border-color var(--ease-fast),
+    box-shadow var(--ease-fast),
+    background var(--ease-fast);
+}
+
+input[type="text"]::placeholder,
+input[type="url"]::placeholder,
+input[type="number"]::placeholder {
+  color: var(--text-muted);
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--input-focus);
+}
+
+/* remove number spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 0.4;
+}
+
+
+/* ----------------------------------------------------------
+   15. Empty states & error messages
+   ---------------------------------------------------------- */
+.empty-state {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-align: center;
+  padding: var(--space-lg) 0;
+}
+
+.error-msg {
+  font-size: var(--text-sm);
+  color: var(--danger);
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  margin-top: var(--space-xs);
+}
+
+.error-msg[hidden] {
+  display: none;
+}
+
+
+/* ----------------------------------------------------------
+   16. Theme toggle button
+   ---------------------------------------------------------- */
+#theme-toggle {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition:
+    background var(--ease-fast),
+    transform var(--ease-fast),
+    box-shadow var(--ease-fast);
+}
+
+#theme-toggle:hover {
+  background: var(--btn-hover-bg);
+  transform: rotate(20deg) scale(1.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+#theme-toggle:active {
+  transform: rotate(0deg) scale(0.95);
+}
+
+/* SVG icons toggled via JS (src swap) */
+#theme-icon {
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  /* invert icon to white on dark, normal on light */
+  filter: invert(1) brightness(1.5);
+  transition: filter var(--ease-normal);
+}
+
+[data-theme="light"] #theme-icon {
+  filter: invert(0.3) sepia(1) saturate(2) hue-rotate(240deg) brightness(0.7);
+}
+
+
+/* ----------------------------------------------------------
+   17. Responsive breakpoints
+   ---------------------------------------------------------- */
+
+/* Tablet — 768px and below */
+@media (max-width: 768px) {
+  body {
+    padding: var(--space-md) var(--space-xl);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .middle-row {
+    grid-template-columns: 1fr;
+  }
+
+  #task-form {
+    grid-template-columns: 1fr;
+  }
+
+  #task-form button[type="submit"] {
+    width: 100%;
+  }
+}
+
+/* Mobile — 480px and below */
+@media (max-width: 480px) {
+  body {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  body > header {
+    padding: var(--space-md);
+  }
+
+  h1 {
+    font-size: var(--text-xl);
+  }
+
+  #timer-display {
+    font-size: var(--text-3xl);
+  }
+
+  .card {
+    padding: var(--space-md);
+  }
+
+  article menu {
+    flex-wrap: wrap;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   18. Animations & transitions
+   ---------------------------------------------------------- */
+
+/* fade + slide-up for task items */
+@keyframes item-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#task-list li,
+#links-list li {
+  animation: item-enter var(--ease-normal) both;
+}
+
+/* body theme transition */
+body,
+.card,
+body > header {
+  transition:
+    background var(--ease-slow),
+    border-color var(--ease-slow),
+    box-shadow var(--ease-slow),
+    color var(--ease-normal);
+}
+
+
+/* ----------------------------------------------------------
+   19. Accessibility — reduced motion
+   ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* focus ring for keyboard nav */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}

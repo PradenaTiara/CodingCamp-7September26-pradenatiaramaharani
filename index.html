@@ -1,93 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Personal Productivity Dashboard — manage your time, tasks, and links in one place." />
+    <title>Productivity Dashboard</title>
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <body>
 
-    <title>Life Dashboard</title>
+    <!-- ======================================================
+         HEADER — Greeting, time/date, theme toggle
+    ====================================================== -->
+    <header>
+      <section aria-label="Greeting and time">
+        <h1 id="greeting">Good morning!</h1>
+        <time id="current-time" aria-live="polite"></time>
+        <p id="current-date"></p>
+      </section>
 
-    <link rel="icon" type="image/webp" href="img/Logo_revou.webp">
-</head>
+      <button
+        id="theme-toggle"
+        aria-label="Toggle light/dark mode"
+        title="Toggle theme"
+      >
+        <img
+          id="theme-icon"
+          src="asset/moon.svg"
+          alt="Switch to light mode"
+          width="22"
+          height="22"
+        />
+      </button>
+    </header>
 
-<body>
+    <!-- ======================================================
+         MAIN — two-column middle row + full-width todo
+    ====================================================== -->
     <main>
+
+      <!-- ---- Middle row: Timer + To-Do List side by side ---- -->
+      <section class="middle-row" aria-label="Timer and to-do list">
+
+        <!-- FOCUS TIMER CARD -->
+        <article class="card" aria-label="Focus timer">
+          <header>
+            <h2>Focus Timer</h2>
+          </header>
+
+          <output id="timer-display" aria-live="polite" aria-atomic="true">25:00</output>
+
+          <menu>
+            <li>
+              <button id="timer-start" aria-label="Start timer">Start</button>
+            </li>
+            <li>
+              <button id="timer-stop" aria-label="Stop timer" disabled>Stop</button>
+            </li>
+            <li>
+              <button id="timer-reset" aria-label="Reset timer">Reset</button>
+            </li>
+          </menu>
+
+          <form id="timer-settings" aria-label="Timer duration settings">
+            <label for="timer-duration">Set duration (minutes)</label>
+            <input
+              type="number"
+              id="timer-duration"
+              name="timer-duration"
+              min="1"
+              max="60"
+              value="25"
+              aria-describedby="timer-duration-hint"
+            />
+            <small id="timer-duration-hint">Enter a value between 1 and 60 minutes.</small>
+            <button type="submit">Apply</button>
+          </form>
+        </article>
+
+        <!-- TO-DO LIST CARD -->
+        <article class="card todo-section" aria-label="To-do list">
+          <header>
+            <h2>To-Do List</h2>
+            <output id="task-count" aria-live="polite"></output>
+          </header>
+
+          <form id="task-form" aria-label="Add a new task">
+            <label for="task-input">New task</label>
+            <input
+              type="text"
+              id="task-input"
+              name="task-input"
+              placeholder="What needs to be done?"
+              required
+              autocomplete="off"
+              aria-describedby="task-error"
+            />
+            <button type="submit">Add Task</button>
+          </form>
+
+          <p id="task-error" class="error-msg" role="alert" aria-live="assertive" hidden></p>
+
+          <ul id="task-list" aria-label="Task list">
+            <!-- Tasks rendered by JS -->
+          </ul>
+
+          <p id="tasks-empty" class="empty-state" hidden>
+            No tasks yet. Add something above!
+          </p>
+
+        </article>
+
+      </section><!-- /middle-row -->
+
+      <!-- ---- Full-width: Quick Links ---- -->
+      <section class="card" aria-label="Quick links">
         <header>
-            <output id="currentTime" aria-label="Current time"> 00:00:00 </output>
-            <time id="currentDate" datetime="2026-01-27"> Tuesday, January 27, 2026 </time>
-            <p id="greeting"> Good Morning </p>
+          <h2>Quick Links</h2>
         </header>
 
-        <section aria-label="Produktivitas">
-            <section aria-labelledby="focusTimer">
-                <h2 id="focusTimerTitle"> Focus Timer </h2>
-                <output id="focusTimer" aria-label="Focus timer"> 00:00 </output>
-                <nav>
-                    <button type="button" id="startTimer"> Start </button>
-                    <button type="button" id="stopTimer"> Stop </button>
-                    <button type="button" id="resetTimer"> Reset </button>
-                </nav>
-            </section>
+        <form id="link-form" aria-label="Add a new quick link">
+          <label for="link-name">Name</label>
+          <input
+            type="text"
+            id="link-name"
+            name="link-name"
+            placeholder="e.g. GitHub"
+            required
+            autocomplete="off"
+          />
 
-            <section aria-labelledby="task">
-                <h2 id="tasksTitle"> Tasks </h2>
-                <form id="taskForm">
-                    <label for="taskInput" hidden> Add a new task </label>
+          <label for="link-url">URL</label>
+          <input
+            type="url"
+            id="link-url"
+            name="link-url"
+            placeholder="https://example.com"
+            required
+            autocomplete="off"
+          />
 
-                    <input
-                        id="taskInput"
-                        name="task"
-                        type="text"
-                        placeholder="Add a new task..."
-                        autocomplete="off"
-                    >
+          <button type="submit">Add Link</button>
+        </form>
 
-                    <button type="submit"> Add </button>
-                </form>
+        <nav aria-label="Saved quick links">
+          <ul id="links-list" aria-label="Quick links list">
+            <!-- Links rendered by JS -->
+          </ul>
+          <p id="links-empty" class="empty-state" hidden>
+            No links yet. Add your first one above!
+          </p>
+        </nav>
+      </section>
 
-                <ul id="taskList"></ul>
-            </section>
-
-            <section aria-labelledby="quickLinks">
-                <h2 id="quickLinksTitle"> Quick Links </h2>
-
-                <form id="linkForm">
-                    <label for="linkName"> Link Name </label>
-
-                    <input
-                        id="linkName"
-                        name="linkName"
-                        type="text"
-                        placeholder="Link name"
-                        autocomplete="off"
-                        required
-                    >
-
-                    <label for="linkUrl"> URL </label>
-
-                    <input
-                        id="linkUrl"
-                        name="linkUrl"
-                        type="url"
-                        placeholder="URL"
-                        autocomplete="off"
-                        required
-                    >
-
-                    <button class="add-btn" type="submit" > Add Link </button>
-                </form>
-
-                <nav
-                    id="linksList"
-                    class="links-list"
-                    aria-label="Quick links"
-                >
-                </nav>
-            </section>
-        </section>
     </main>
 
     <script src="js/index.js"></script>
-
-</body>
+  </body>
 </html>
